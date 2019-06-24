@@ -50,7 +50,7 @@ class MovieAdapter(private val context: Context, private val movies: ArrayList<M
         private var tvRating: TextView? = view?.findViewById(R.id.tv_rating)
         private var tvGenres: TextView? = view?.findViewById(R.id.tv_genres)
         private var btnDetail: Button? = view?.findViewById(R.id.btn_detail)
-
+        
         @SuppressLint("SetTextI18n")
         internal fun bind(movie: Movie, position: Int?) {
             imgPoster?.let {
