@@ -1,6 +1,5 @@
 package com.wildan.moviecatalogue.activity
 
-import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -32,7 +31,6 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun showMovieData() {
         movieData = intent.getParcelableExtra(EXTRA)
         GlideApp.with(this)
@@ -40,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
             .into(img_poster)
         tv_title.text = movieData.title.toString()
         tv_date.text = movieData.date.toString()
-        tv_rating.text = "Rating: ${movieData.rating.toString()}"
+        tv_rating.text = String.format(resources.getString(R.string.movie_rating), movieData.rating.toString())
         tv_genres.text = movieData.genres.toString()
         tv_description.text = movieData.description.toString()
     }
