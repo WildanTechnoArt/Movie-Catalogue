@@ -1,25 +1,30 @@
 package com.wildan.moviecatalogue.activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
+
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wildan.moviecatalogue.R
 import com.wildan.moviecatalogue.fragment.*
+
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         bottom_navigation.setOnNavigationItemSelectedListener(this)
-        loadFragment(MovieFragment())
+
+        if (savedInstanceState == null) {
+            bottom_navigation.selectedItemId = R.id.movie_menu
+        }
     }
 
     private fun loadFragment(fragment: Fragment?): Boolean {
@@ -50,6 +55,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when (p0.itemId) {
             R.id.movie_menu -> fragment = MovieFragment()
             R.id.tvshow_menu -> fragment = TvShowFragment()
+            R.id.favorite_menu -> fragment = FavoriteFragment()
         }
         return loadFragment(fragment)
     }

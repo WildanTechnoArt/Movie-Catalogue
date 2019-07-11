@@ -14,7 +14,13 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // The Movie DB API
+        buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+        buildConfigField "String", "POSTER_URL", "\"https://image.tmdb.org/t/p/w185/\""
+        buildConfigField "String", "BACKDROP_URL", "\"https://image.tmdb.org/t/p/w500/\""
+        buildConfigField "String", "API_KEY", "\"5a11602d864e08ee0466e6c57293cc17\""
     }
 
     buildTypes {
@@ -23,28 +29,62 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.core:core:1.2.0-alpha02'
+
+    // Justified TextView
+    implementation 'com.codesgood:justifiedtextview:1.1.0'
+
+    // View Model
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02'
 
     // Meterial Design
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
 
     // Image Loader
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02'
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
+    // API Response Test
+    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+
+    //retrofit 2
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation "com.squareup.retrofit2:converter-gson:2.5.0"
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+
+    //reactive
+    implementation "io.reactivex.rxjava2:rxjava:2.2.6"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.13.1'
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Local Storage Room Database
+    implementation 'androidx.room:room-runtime:2.2.0-alpha01'
+    annotationProcessor 'androidx.room:room-compiler:2.2.0-alpha01'
+
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha01'
 }
 androidExtensions {
     experimental = true
