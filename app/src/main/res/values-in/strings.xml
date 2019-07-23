@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="poster">poster</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_genres">Movie Genres</string>
+    <string name="movie_date">Movie Date</string>
+    <string name="movie_rating">Penilaian: %1$s/10</string>
+    <string name="movie_popularity">Kepopuleran: %1$s</string>
+    <string name="overview">Ikhtisar</string>
+    <string name="movie_description">Movie Description</string>
+    <string name="movie">Film</string>
+    <string name="tv_show">Acara TV</string>
+    <string name="language_setting">Pengaturan Bahasa</string>
+    <string name="poster_backdrop">poster backdrop</string>
+    <string name="movie_duration">%1$s Menit</string>
+    <string name="release_date">Tanggal rilis:</string>
+    <string name="genres">Genre:</string>
+    <string name="duration">Durasi:</string>
+    <string name="favorite">Favorit</string>
+    <string name="add_favorite">Tambahkan ke Favorit</string>
+    <string name="timeout">Waktu koneksi habis</string>
+    <string name="no_internet">Tidak Terhubung Dengan Internet</string>
+    <string name="remove_favorite">Hapus dari Favorit</string>
+    <string name="no_data">Belum ada data yang ditambahkan</string>
+</resources>

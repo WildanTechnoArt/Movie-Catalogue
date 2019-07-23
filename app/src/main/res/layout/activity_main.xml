@@ -38,10 +38,10 @@
             app:menu="@menu/bottom_view"
             app:itemIconTint="@drawable/bottom_view_selector"
             app:itemTextColor="@drawable/bottom_view_selector"
-            app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:labelVisibilityMode="labeled"/>
 
     <FrameLayout
             android:id="@+id/content_view"
