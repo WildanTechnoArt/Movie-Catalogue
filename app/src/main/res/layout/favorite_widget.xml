@@ -1,0 +1,43 @@
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/favorite_movie"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:padding="@dimen/margin_big_size"
+                android:textSize="@dimen/widget_header_size"/>
+
+        <StackView
+                android:id="@+id/stack_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:loopViews="true"/>
+
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:padding="@dimen/margin_big_size"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:text="@string/empty_widget_view_text"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"/>
+
+</FrameLayout>

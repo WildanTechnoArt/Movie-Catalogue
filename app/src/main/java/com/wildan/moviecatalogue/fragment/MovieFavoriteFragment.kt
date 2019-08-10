@@ -10,10 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-
 import com.wildan.moviecatalogue.R
 import com.wildan.moviecatalogue.activity.DetailMovieActivity
-import com.wildan.moviecatalogue.adapter.FavoriteAdapter
+import com.wildan.moviecatalogue.adapter.MovieFavoriteAdapter
 import com.wildan.moviecatalogue.adapter.MovieAdapterListener
 import com.wildan.moviecatalogue.database.AppDatabase
 import com.wildan.moviecatalogue.database.MovieEntity
@@ -25,7 +24,7 @@ class MovieFavoriteFragment : Fragment(), MovieAdapterListener {
     private lateinit var rvMovie: RecyclerView
     private lateinit var tvNoData: TextView
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private var adapter by Delegates.notNull<FavoriteAdapter>()
+    private var adapter by Delegates.notNull<MovieFavoriteAdapter>()
     private lateinit var mLayoutManager: RecyclerView.LayoutManager
     private lateinit var movieDatabase: AppDatabase
     private var mListMovie = arrayListOf<MovieEntity>()
@@ -45,9 +44,20 @@ class MovieFavoriteFragment : Fragment(), MovieAdapterListener {
 
         mLayoutManager = LinearLayoutManager(view.context)
         rvMovie.setHasFixedSize(true)
-        adapter = FavoriteAdapter(mListMovie, this)
+        adapter = MovieFavoriteAdapter(mListMovie, this)
         rvMovie.layoutManager = mLayoutManager
         rvMovie.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showDetailMovie()
+    }
+
+    override fun onMovieClickListener(movieId: String) {
+        val intent = Intent(context, DetailMovieActivity::class.java)
+        intent.putExtra(MOVIE_EXTRA, movieId)
+        startActivity(intent)
     }
 
     private fun showDetailMovie() {
@@ -62,16 +72,5 @@ class MovieFavoriteFragment : Fragment(), MovieAdapterListener {
             rvMovie.visibility = View.GONE
             tvNoData.visibility = View.VISIBLE
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showDetailMovie()
-    }
-
-    override fun onItemClickListener(movieId: String, movieType: String) {
-        val intent = Intent(context, DetailMovieActivity::class.java)
-        intent.putExtra(MOVIE_EXTRA, movieId)
-        startActivity(intent)
     }
 }

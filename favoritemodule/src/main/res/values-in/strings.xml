@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Favorite Movie</string>
+    <string name="poster">poster</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_date">Movie Date</string>
+    <string name="movie_rating">Penilaian: %1$s/10</string>
+    <string name="movie_popularity">Kepopuleran: %1$s</string>
+    <string name="no_data">Belum ada data yang ditambahkan</string>
+</resources>

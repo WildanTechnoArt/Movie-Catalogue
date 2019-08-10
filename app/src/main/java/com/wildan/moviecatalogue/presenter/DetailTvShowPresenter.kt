@@ -1,16 +1,17 @@
 package com.wildan.moviecatalogue.presenter
 
+import com.rx2androidnetworking.Rx2AndroidNetworking
 import com.wildan.moviecatalogue.model.tv.DetailTvShowResponse
-import com.wildan.moviecatalogue.repository.MovieRepositoryImp
+import com.wildan.moviecatalogue.utils.UtilsConstant.Companion.BASE_URL
 import com.wildan.moviecatalogue.view.DetailTvShowView
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subscribers.ResourceSubscriber
 
 class DetailTvShowPresenter(
-    private val view: DetailTvShowView.View,
-    private val movie: MovieRepositoryImp?
+    private val view: DetailTvShowView.View
 ) : DetailTvShowView.Presenter {
 
     private val compositeDisposable = CompositeDisposable()
@@ -18,28 +19,32 @@ class DetailTvShowPresenter(
     override fun getDetailTvShow(apiKey: String, tvId: String, language: String) {
         view.showProgressBar()
 
-        movie?.getDetailTvShow(apiKey, tvId, language)
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribeOn(Schedulers.io())
-            ?.subscribeWith(object : ResourceSubscriber<DetailTvShowResponse>() {
+        Rx2AndroidNetworking.get(BASE_URL + "tv/{tv_id}")
+            .addPathParameter("tv_id", tvId)
+            .addQueryParameter("api_key", apiKey)
+            .addQueryParameter("language", language)
+            .build()
+            .getObjectObservable(DetailTvShowResponse::class.java)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<DetailTvShowResponse> {
                 override fun onComplete() {
                     view.onSuccess()
                 }
 
-                override fun onNext(t: DetailTvShowResponse?) {
-                    t?.let { view.showDetailTvShow(it) }
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
                 }
 
-                override fun onError(t: Throwable?) {
+                override fun onNext(t: DetailTvShowResponse) {
+                    t.let { view.showDetailTvShow(it) }
+                }
+
+                override fun onError(e: Throwable) {
                     view.hideProgressBar()
-                    view.handleError(t)
+                    view.handleError(e)
                 }
-
-            })?.let {
-                compositeDisposable.add(
-                    it
-                )
-            }
+            })
     }
 
     override fun onDestroy() {

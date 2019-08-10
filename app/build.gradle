@@ -7,13 +7,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.wildan.moviecatalogue"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion 19
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // The Movie DB API
@@ -40,9 +41,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.2.0-alpha02'
+    implementation "androidx.preference:preference:1.1.0-rc01"
 
     // Justified TextView
     implementation 'com.codesgood:justifiedtextview:1.1.0'
@@ -52,28 +54,18 @@ dependencies {
     kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02'
 
     // Meterial Design
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
 
     // Image Loader
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02'
-    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
-    // API Response Test
-    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
-    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
-
-    //retrofit 2
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation "com.squareup.retrofit2:converter-gson:2.5.0"
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
-
-    //reactive
-    implementation "io.reactivex.rxjava2:rxjava:2.2.6"
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.13.1'
+    // Fast Android Networking with RxJava
+    implementation 'com.amitshekhar.android:rx2-android-networking:1.0.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
 
     // gson
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -82,9 +74,10 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.0-alpha01'
     kapt 'androidx.room:room-compiler:2.2.0-alpha01'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.3.0-alpha01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha01'
+    testImplementation 'junit:junit:4.13-beta-3'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
 }
 androidExtensions {
     experimental = true

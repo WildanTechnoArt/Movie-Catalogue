@@ -20,7 +20,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:elevation="6dp"
+                android:elevation="@dimen/toolbar_elevation"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="@string/app_name"
                 style="@style/AppTheme.AppBarOverlay"
@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
+            android:visibility="visible"
             app:menu="@menu/bottom_view"
             app:itemIconTint="@drawable/bottom_view_selector"
             app:itemTextColor="@drawable/bottom_view_selector"
@@ -50,8 +51,39 @@
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar_layout">
+            app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
+            android:visibility="visible">
 
     </FrameLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_layout">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_movie_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+            android:id="@+id/tv_movie_not_found"
+            android:text="@string/movie_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/header_text_size"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

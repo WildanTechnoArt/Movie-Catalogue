@@ -50,6 +50,17 @@ class TvShowFavoriteFragment : Fragment(), TvShowAdapterListener {
         rvMovie.adapter = adapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        showDetailMovie()
+    }
+
+    override fun onTvClickListener(tvId: String) {
+        val intent = Intent(context, DetailTvShowActivity::class.java)
+        intent.putExtra(MOVIE_EXTRA, tvId)
+        startActivity(intent)
+    }
+
     private fun showDetailMovie() {
         mListMovie.clear()
         mListMovie.addAll(movieDatabase.tvShowDao().getAllTvShow())
@@ -62,16 +73,5 @@ class TvShowFavoriteFragment : Fragment(), TvShowAdapterListener {
             rvMovie.visibility = View.GONE
             tvNoData.visibility = View.VISIBLE
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showDetailMovie()
-    }
-
-    override fun onItemClickListener(tvId: String, movieType: String) {
-        val intent = Intent(context, DetailTvShowActivity::class.java)
-        intent.putExtra(MOVIE_EXTRA, tvId)
-        startActivity(intent)
     }
 }

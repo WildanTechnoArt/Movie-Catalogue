@@ -13,7 +13,7 @@ import com.wildan.moviecatalogue.utils.UtilsConstant.Companion.POSTER_URL
 
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class ListMovieAdapter(private val mClickListener: MovieAdapterListener) :
+class ListMovieAdapter(private val mClickListener: MovieAdapterListener?) :
     RecyclerView.Adapter<ListMovieAdapter.MovieViewHolder>() {
 
     private var mMoviesList = ArrayList<MovieResult>()
@@ -21,6 +21,11 @@ class ListMovieAdapter(private val mClickListener: MovieAdapterListener) :
     fun setData(items: ArrayList<MovieResult>) {
         mMoviesList.clear()
         mMoviesList.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clearMovie(){
+        mMoviesList.clear()
         notifyDataSetChanged()
     }
 
@@ -70,7 +75,7 @@ class ListMovieAdapter(private val mClickListener: MovieAdapterListener) :
             }
 
         holder.itemView.movie_item?.setOnClickListener {
-            mClickListener.onItemClickListener(mMoviesList[position].id.toString(), "movie")
+            mClickListener?.onMovieClickListener(mMoviesList[position].id.toString())
         }
     }
 

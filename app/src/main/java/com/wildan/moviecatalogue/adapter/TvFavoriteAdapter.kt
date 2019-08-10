@@ -60,7 +60,7 @@ class TvFavoriteAdapter(
             }
 
         holder.itemView.movie_item?.setOnClickListener {
-            mClickListener.onItemClickListener(mListMovie[position].tvId.toString(), "movie")
+            mClickListener.onTvClickListener(mListMovie[position].tvId.toString())
         }
     }
 

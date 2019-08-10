@@ -6,32 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
+import com.androidnetworking.AndroidNetworking
 import com.wildan.moviecatalogue.R
 import com.wildan.moviecatalogue.activity.DetailMovieActivity
 import com.wildan.moviecatalogue.adapter.ListMovieAdapter
 import com.wildan.moviecatalogue.adapter.MovieAdapterListener
 import com.wildan.moviecatalogue.model.movie.MovieResponse
 import com.wildan.moviecatalogue.model.movie.MovieResult
-import com.wildan.moviecatalogue.network.BaseApiService
 import com.wildan.moviecatalogue.network.ConnectivityStatus
-import com.wildan.moviecatalogue.network.NetworkClient
 import com.wildan.moviecatalogue.network.NetworkError
-import com.wildan.moviecatalogue.repository.MovieRepositoryImp
 import com.wildan.moviecatalogue.utils.UtilsConstant
 import com.wildan.moviecatalogue.utils.UtilsConstant.Companion.API_KEY
 import com.wildan.moviecatalogue.view.MovieView
 import com.wildan.moviecatalogue.viewmodel.MovieViewModel
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
-
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
@@ -40,7 +35,6 @@ class MovieFragment : Fragment(), MovieView.View, MovieAdapterListener {
 
     private lateinit var rvMovie: RecyclerView
     private lateinit var movieViewModel: MovieViewModel
-    private var baseApiService: BaseApiService? = null
     private var adapter by Delegates.notNull<ListMovieAdapter>()
     private var page: Int = 1
     private var totalPage: Int? = null
@@ -59,7 +53,7 @@ class MovieFragment : Fragment(), MovieView.View, MovieAdapterListener {
         rvMovie = view.findViewById(R.id.rv_movie)
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
 
-        prepare(view)
+        prepare()
         scrollListener()
 
         if (savedInstanceState == null) {
@@ -70,70 +64,6 @@ class MovieFragment : Fragment(), MovieView.View, MovieAdapterListener {
             showListMovie()
         }
 
-    }
-
-    private fun prepare(view: View) {
-        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
-        movieViewModel.getMovies().observe(this, getMovie)
-
-        adapter = ListMovieAdapter(this)
-        adapter.notifyDataSetChanged()
-
-        rvMovie.setHasFixedSize(true)
-        mLayoutManager = LinearLayoutManager(context)
-        rvMovie.layoutManager = mLayoutManager
-
-        baseApiService = NetworkClient.getClient(view.context)
-            ?.create(BaseApiService::class.java)
-
-        rvMovie.adapter = adapter
-    }
-
-    private val getMovie =
-        Observer<ArrayList<MovieResult>> { movieItems ->
-            if (movieItems != null) {
-                if (page == 1) {
-                    adapter.setData(movieItems)
-                } else {
-                    adapter.refreshAdapter(movieItems)
-                }
-            }
-        }
-
-    private fun scrollListener() {
-        rvMovie.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val countItem = linearLayoutManager.itemCount
-                val lastVisiblePosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
-                val isLastPosition = countItem.minus(1) == lastVisiblePosition
-                if (!isLoading && isLastPosition && page != totalPage) {
-                    page = page.plus(1)
-                    showListMovie()
-                }
-            }
-        })
-    }
-
-    private fun showListMovie() {
-        val repository = baseApiService?.let { MovieRepositoryImp(it) }
-        lastLocale = Locale.getDefault().language.toString()
-        when (Locale.getDefault().language.toString()) {
-            "en" -> context?.let {
-                if (repository != null) {
-                    movieViewModel.setMovie(
-                        API_KEY, page = page, language = "en", view = this, movie = repository
-                    )
-                }
-            }
-            "in" -> context?.let {
-                if (repository != null) {
-                    movieViewModel.setMovie(
-                        API_KEY, page = page, language = "id", view = this, movie = repository
-                    )
-                }
-            }
-        }
     }
 
     override fun onResume() {
@@ -157,10 +87,6 @@ class MovieFragment : Fragment(), MovieView.View, MovieAdapterListener {
         totalPage = movie.totalPages
     }
 
-    override fun noInternetConnection(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(UtilsConstant.STATE_SAVED, "saved")
@@ -179,9 +105,58 @@ class MovieFragment : Fragment(), MovieView.View, MovieAdapterListener {
         }
     }
 
-    override fun onItemClickListener(movieId: String, movieType: String) {
+    override fun onMovieClickListener(movieId: String) {
         val intent = Intent(context, DetailMovieActivity::class.java)
         intent.putExtra(UtilsConstant.MOVIE_EXTRA, movieId)
         startActivity(intent)
+    }
+
+    private fun prepare() {
+        AndroidNetworking.initialize(context)
+
+        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
+        movieViewModel.getMovies().observe(this, getMovie)
+
+        adapter = ListMovieAdapter(this)
+        adapter.notifyDataSetChanged()
+
+        rvMovie.setHasFixedSize(true)
+        mLayoutManager = LinearLayoutManager(context)
+        rvMovie.layoutManager = mLayoutManager
+
+        rvMovie.adapter = adapter
+    }
+
+    private fun scrollListener() {
+        rvMovie.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val countItem = linearLayoutManager.itemCount
+                val lastVisiblePosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
+                val isLastPosition = countItem.minus(1) == lastVisiblePosition
+                if (!isLoading && isLastPosition && page != totalPage) {
+                    page = page.plus(1)
+                    showListMovie()
+                }
+            }
+        })
+    }
+
+    private fun showListMovie() {
+        lastLocale = Locale.getDefault().language.toString()
+        when (Locale.getDefault().language.toString()) {
+            "en" -> movieViewModel.setMovie(API_KEY, page = page, language = "en", view = this)
+            "in" -> movieViewModel.setMovie(API_KEY, page = page, language = "id", view = this)
+        }
+    }
+
+    private val getMovie = Observer<ArrayList<MovieResult>> { movieItems ->
+        if (movieItems != null) {
+            if (page == 1) {
+                adapter.setData(movieItems)
+            } else {
+                adapter.refreshAdapter(movieItems)
+            }
+        }
     }
 }

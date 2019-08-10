@@ -13,7 +13,7 @@ import com.wildan.moviecatalogue.utils.UtilsConstant.Companion.POSTER_URL
 
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class ListTvAdapter(private val mListener: MovieAdapterListener) :
+class ListTvAdapter(private val mListener: TvShowAdapterListener?) :
     RecyclerView.Adapter<ListTvAdapter.MovieViewHolder>() {
 
     private val tvShowList = ArrayList<TvShowResult>()
@@ -27,6 +27,11 @@ class ListTvAdapter(private val mListener: MovieAdapterListener) :
     fun refreshAdapter(tvShowList: List<TvShowResult>) {
         this.tvShowList.addAll(tvShowList)
         notifyItemRangeChanged(0, this.tvShowList.size)
+    }
+
+    fun clearMovie(){
+        tvShowList.clear()
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(view: ViewGroup, p1: Int): MovieViewHolder {
@@ -66,7 +71,7 @@ class ListTvAdapter(private val mListener: MovieAdapterListener) :
                 ?.let { String.format(it, tvShowList[position].voteAverage.toString()) }
 
         holder.itemView.movie_item?.setOnClickListener {
-            mListener.onItemClickListener(tvShowList[position].id.toString(), "tv")
+            mListener?.onTvClickListener(tvShowList[position].id.toString())
         }
     }
 

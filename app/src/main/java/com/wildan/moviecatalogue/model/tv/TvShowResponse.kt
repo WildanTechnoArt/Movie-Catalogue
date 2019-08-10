@@ -22,6 +22,6 @@ data class TvShowResponse(
 
     @SerializedName("results")
     @Expose
-    var movieResult: ArrayList<TvShowResult>
+    var tvResult: ArrayList<TvShowResult>
 
 ) : Parcelable

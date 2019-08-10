@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:elevation="6dp"
-            app:tabSelectedTextColor="#FFFFFF"
+            app:tabSelectedTextColor="@android:color/white"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             app:tabTextColor="#FFDFDFDF"
             tools:targetApi="lollipop">
